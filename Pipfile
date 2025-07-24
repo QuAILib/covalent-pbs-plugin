@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+covalent-pbspro-plugin = {path = ".", editable = true}
+ipykernel = "*"
+
+[dev-packages]
+isort = "*"
+flake8 = "*"
+black = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+pytest-asyncio = "*"
+pytest-html = "*"
+mock = "*"
+pre-commit = "*"
+
+[requires]
+python_version = "3.10"

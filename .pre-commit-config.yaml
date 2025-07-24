@@ -1,4 +1,5 @@
 # Copyright 2021 Agnostiq Inc.
+# Copyright 2025 National Institute of Advanced Industrial Science and Technology.
 #
 # This file is part of Covalent.
 #
@@ -15,33 +16,42 @@
 # limitations under the License.
 
 exclude: ".git|.tox"
-default_stages: [commit]
 fail_fast: true
+default_stages: [pre-commit]
+
 
 repos:
-    - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v4.4.0
-      hooks:
-          - id: trailing-whitespace
-          - id: end-of-file-fixer
-          - id: check-added-large-files
-            args: ["--maxkb=10000"]
-          - id: check-merge-conflict
-          - id: requirements-txt-fixer
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+      - id: check-merge-conflict
 
-    - repo: https://github.com/PyCQA/isort
-      rev: 5.12.0
-      hooks:
-          - id: isort
-            args: ["--profile", "black"]
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args:
+          - --check
 
-    - repo: https://github.com/psf/black
-      rev: 23.1.0
-      hooks:
-          - id: black
-            language_version: python3.8
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        args:
+          - --check
+          - --diff
+          - covalent_pbspro_plugin
+          - tests
+          - setup.py
 
-    - repo: https://github.com/PyCQA/flake8
-      rev: 6.0.0
-      hooks:
-          - id: flake8
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        args:
+          - covalent_pbspro_plugin
+          - tests
+          - setup.py

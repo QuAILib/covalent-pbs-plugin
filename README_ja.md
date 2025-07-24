@@ -2,36 +2,36 @@
 
 ## Covalent PBS Professional Plugin
 
-Covalent is a Pythonic workflow tool used to execute tasks on advanced computing hardware. This executor plugin interfaces Covalent with HPC systems managed by [PBS Professional](https://www.altairjp.co.jp/pbs-professional/). For workflows to be deployable, users must have SSH access to the PBS Professional node, writable storage space on the remote filesystem, and permissions to submit jobs to PBS Professional.
+Covalent は Python を用いたワークフローツールであり、高度なコンピューティングハードウェア上でタスクを実行するために使用されています。Covalent PBS Professional Plugin は、 Covalent を [PBS Professional](https://www.altairjp.co.jp/pbs-professional/) で管理されているHPCシステムと連携させます。ワークフローをデプロイするには、ユーザーは PBS Professional ノードへのSSHアクセス、リモートファイルシステム上で書き込み可能なストレージスペース、および PBS Professional へのジョブの送信権限を保持している必要があります。
 
-## Installation
+## インストール方法
 
-### To install from the source
+### ソースコードからのインストール方法
 
-If you install this plugin directly from the source, follow these steps:
+次のステップで Covalent PBS Professional Plugin をソースコードから直接インストールすることができます。
 
-1. Clone the repository to your local machine.
-2. Navigate to the project directory:
+1. 本リポジトリをローカルマシンにクローン
+2. ディレクトリに移動
 
 ```shell
 cd this-repository
 ```
 
-3. Install this plugin using pip:
+3. `pip`を使ってインストール
 
 ```shell
 pip install .
 ```
 
-### Environment on the remote system
+### リモートマシンの環境について
 
-On the remote system, both the major and minor version of Python must match those on the local machine to ensure reliable (un)pickling of the various objects. Additionally, the remote system's Python environment must have the same version of [covalent package](https://github.com/AgnostiqHQ/covalent) on your machine installed (e.g. `pip install covalent==<specific version>`).
+リモートシステムでは、Python のメジャーバージョンとマイナーバージョンがローカルマシンのものと一致する必要があります。これは、さまざまなオブジェクトを pickle 化(および unpickle ) する際の信頼性を保証するためです。加えて、リモートシステムの Python 環境では、ローカルマシン上と同じバージョンの [covalent](https://github.com/AgnostiqHQ/covalent) をインストールする必要があります（例: `pip install covalent==<specific version>`）。
 
-## Usage
+## 使用方法
 
-### Using the Plugin in a Workflow: Approach 1
+### ワークフローでプラグインを使用する方法 1
 
-With your [Covalent config file](https://docs.covalent.xyz/docs/user-documentation/how-to/customization/)(found at `~/.config/covalent/covalent.conf` by default) appropriately set up, one can run a workflow on the HPC machine as follows:
+[Covalentの設定ファイル](https://docs.covalent.xyz/docs/user-documentation/how-to/customization/)(デフォルトは`~/.config/covalent/covalent.conf`)を適切に設定することで、次のようにしてHPCマシン上でワークフローを実行できます。
 
 ```python
 import covalent as ct
@@ -50,9 +50,11 @@ result = ct.get_result(dispatch_id)
 
 ```
 
-### Using the Plugin in a Workflow: Approach 2
+### ワークフローでプラグインを使用する方法 2
 
-If you wish to modify the various parameters within your Python script rather than solely relying on the Covalent configuration file, it is possible to do that as well by instantiating a custom instance of the PBSProExecutor class. An example with some commonly used parameters is shown below. By default, any parameters not specified in the PBSProExecutor will be inherited from the configuration file.
+Covalent の設定ファイルの設定値を使用するだけでなく、Python スクリプト内で様々なパラメータを変更したい場合は、`PBSProExecutor` クラスのカスタムインスタンスを生成することで実現可能です。
+
+以下はいくつかの一般的に使用されるパラメータの設定例です。デフォルトでは、PBSProExecutor内で指定されていないパラメータは、設定ファイルから継承されます。
 
 ```python
 import covalent as ct
@@ -94,11 +96,11 @@ dispatch_id = ct.dispatch(workflow)(1, 2)
 result = ct.get_result(dispatch_id)
 ```
 
-### Configuration
+### 設定値
 
-There are many configuration options that can be passed in to the class `ct.executor.PBSProExecutor` or by modifying the covalent configuration file under the section `[executors.pbspro]`.
+`ct.executor.PBSProExecutor`に渡すことができる、または Covalent の設定ファイルの `[executors.pbspro]` セクションを変更することで指定できる設定オプションは多数あります。
 
-The following shows an example of how a user might modify their covalent configuration file to support this plugin:
+以下は Covalent の設定ファイルこのプラグインの設定値を記述する方法の例です。
 
 ```console
 [executors.pbspro]
@@ -126,12 +128,11 @@ l = ["walltime=1:00:00", "select=mem=400mb"]
 V = ""
 
 ```
+#### `qsub` コマンドのオプションの指定方法
 
-#### Specifying Optional Parameters of `qsub` command
+Covalent PBS Professional Plugin は、`qsub`コマンドを使用してジョブを PBS Professional に送信します。`qsub`のオプションの指定は、`qsub_args`または`embedded_qsub_args`というパラメータで指定することで行うことができます。これらのパラメータはそれぞれ、`qsub`コマンドに直接渡されるパラメータと、ジョブスクリプトに`#PBS`ディレクティブで記述されるパラメータを指定します。
 
-This plugin submits jobs to PBS Professional with `qsub` command. To specify the options for `qsub`, there are parameters `qsub_args` and `embedded_qsub_args`, which specify parameters passed directly to `qsub` command and parameters for `#PBS` directives in the job script, respectively.
-
-For example, if the following is written in the configuration file,
+たとえば、設定ファイルに次のように記述されている場合、
 
 ```console
 [executors.pbspro.qsub_args]
@@ -144,13 +145,14 @@ V = ""
 
 ```
 
-the task executed by the PBSProExecutor will be submitted to PBS Professional with following `qsub` command.
+PBSProExecutorで実行されるタスクは、以下の`qsub`コマンドによってPBS Professional に送信されます
 
 ```shell
 qsub -P project_name -N job_name {script_filename}
 ```
 
-Also, the script submitted to PBS Professional contains the following directives.
+また、PBS Professional に送信されたスクリプトは以下のディレクティブを含みます。
+
 
 ```shell
 #!/bin/bash
@@ -160,9 +162,9 @@ Also, the script submitted to PBS Professional contains the following directives
 #PBS -V
 ```
 
-##### Unsupported parameters of `qsub` command
+##### サポートしていない`qsub`コマンドのオプション
 
-Covalent PBS Professional Plugin does not support the following parameters of the `qsub` command. If any of the following parameters are set in `qsub_args` or `embedded_qsub_args`, PBSProExecutor will raises an error.
+以下の`qsub`コマンドのオプションは Covalent PBS Professional Plugin ではサポートしていません。`qsub_args`または`embedded_qsub_args`で一つでも設定されていた場合、PBSProExecutorはエラーを送出します。
 
   * `-C`
   * `-G`
@@ -173,11 +175,11 @@ Covalent PBS Professional Plugin does not support the following parameters of th
   * `-X`
   * `-z`
 
-#### Other parameters
+#### その他のパラメータ
 
-You can modify various parameters in the Covalent configuration file to better suit your needs, such as the address of the remote machine, the username to use when logging in, the ssh_key_file to use for authentication.
+使用者のニーズに応じて、Covalent の設定ファイル内で、リモートマシンのアドレスやログイン時に使用するユーザーネーム、認証で使用するssh_key_file等の様々なパラメータを指定・変更することができます。
 
-A full description of the various input parameters are described in the docstring of the PBSProExecutor class, reproduced below:
+PBSProExecutor クラスの docstring に記載されている入力パラメータの説明は以下の通りです。
 
 ```python
 class PBSProExecutor(RemoteExecutor):
@@ -233,17 +235,16 @@ class PBSProExecutor(RemoteExecutor):
     """
 ```
 
-## Release Notes
+## リリースノート
 
-Release notes are available in the [Changelog](/CHANGELOG.md).
+リリースノートは[Changelog](/CHANGELOG.md) に記載しています。
 
-## Citation
+## 引用
 
-Please use the following citation in any publications:
+出版物では次の引用を使用してください。
 
 > W. J. Cunningham, S. K. Radha, F. Hasan, J. Kanem, S. W. Neagle, and S. Sanand.
 > _Covalent._ Zenodo, 2022. https://doi.org/10.5281/zenodo.5903364
 
-## License
-
-Covalent is licensed under the Apache License 2.0. See the LICENSE file or contact the support team for more details.
+## ライセンス
+Covalent は  Apache License 2.0 によってライセンスされています。ライセンスの詳細については、[LICENSE](/LICENSE) を参照するかサポートチームに連絡してください。

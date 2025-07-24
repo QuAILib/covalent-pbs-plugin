@@ -1,0 +1,68 @@
+{
+    "timestamp":1732599879,
+    "pbs_version":"24.1.2",
+    "pbs_server":"server-host",
+    "Jobs":{
+        "12.server-host":{
+            "Job_Name":"sleep.sh",
+            "Job_Owner":"test-user@server-host",
+            "resources_used":{
+                "cpupercent":0,
+                "cput":"00:00:00",
+                "mem":"7936kb",
+                "ncpus":1,
+                "vmem":"11476kb",
+                "walltime":"00:00:49"
+            },
+            "job_state":"<job_state>",
+            "queue":"ALL",
+            "server":"server-host",
+            "Checkpoint":"u",
+            "ctime":"Tue Nov 26 14:43:48 2024",
+            "Error_Path":"<stderr_path>",
+            "exec_host":"com1/0",
+            "exec_vnode":"(com1:ncpus=1)",
+            "Hold_Types":"n",
+            "Join_Path":"n",
+            "Keep_Files":"n",
+            "Mail_Points":"a",
+            "mtime":"Tue Nov 26 14:44:38 2024",
+            "Output_Path":"<stdout_path>",
+            "Priority":0,
+            "qtime":"Tue Nov 26 14:43:48 2024",
+            "Rerunable":"True",
+            "Resource_List":{
+                "ncpus":1,
+                "nodect":1,
+                "nodes":1,
+                "place":"scatter",
+                "select":"1:ncpus=1"
+            },
+            "stime":"Tue Nov 26 14:43:48 2024",
+            "obittime":"Tue Nov 26 14:44:38 2024",
+            "session_id":52768,
+            "jobdir":"/home/test-user",
+            "substate":"<sub_state>",
+            "Variable_List":{
+                "PBS_O_HOME":"/home/test-user",
+                "PBS_O_LANG":"C.UTF-8",
+                "PBS_O_LOGNAME":"test-user",
+                "PBS_O_PATH":"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/opt/pbs/bin:/opt/pbs/bin",
+                "PBS_O_SHELL":"/bin/bash",
+                "PBS_O_WORKDIR":"/home/test-user",
+                "PBS_O_SYSTEM":"Linux",
+                "PBS_O_QUEUE":"ALL",
+                "PBS_O_HOST":"server-host"
+            },
+            "comment":"Job run at Tue Nov 26 at 14:43 on (com1:ncpus=1) and terminated by test-user@server-host",
+            "etime":"Tue Nov 26 14:43:48 2024",
+            "run_count":1,
+            "Stageout_status":1,
+            "Exit_status":"<exit_status>",
+            "Submit_arguments":"./work/sleep.sh",
+            "history_timestamp":1732599878,
+            "project":"_pbs_project_default",
+            "Submit_Host":"server-host"
+        }
+    }
+}

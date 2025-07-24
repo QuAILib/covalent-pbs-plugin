@@ -15,25 +15,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[tool.black]
-target_version = ['py310']
-line-length = 99
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-  | \.tox
-  | \.venv
-)/
-'''
-
-[tool.isort]
-py_version = 310
-line_length = 99
-multi_line_output = 3
-include_trailing_comma = true
-profile = 'black'
-skip_gitignore = true
-
-[tool.pytest.ini_options]
-asyncio_default_fixture_loop_scope = "function"
+from .pbspro import PBSProExecutor
